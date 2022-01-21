@@ -1,16 +1,13 @@
 <template>
   <div>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
-    Book landing page id: {{ $route.params.id }}
+    <Book/>
   </div>
 </template>
 
 <script>
 export default {
   mounted () {
-    console.log('mounted', this.$route.params.id);
+    console.log('mounted: book id', this.$route.params.id);
   }
 }
 </script>
