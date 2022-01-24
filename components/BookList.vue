@@ -1,21 +1,22 @@
 <template>
   <div class="book-list">
-    Book list component
-    <NuxtLink :to="{ path: 'book/' + 1 }">
-      Book landing page
-    </NuxtLink>
-    <NuxtLink :to="{ path: 'book/' + 2 }">
-      Book landing page
-    </NuxtLink>
-    <NuxtLink :to="{ path: 'book/' + 3 }">
-      Book landing page
-    </NuxtLink>
+    <div v-for="book in books" 
+         :key="'book' + book.id">
+      {{ book.title }}
+      <NuxtLink :to="{ path: 'book/' + book.id }">
+        Book landing page
+      </NuxtLink>
+    </div>
     <Pagination/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'BookList'
+  name: 'BookList',
+  props: ['books'],
+  mounted () {
+    console.log(this.books);
+  }
 }
 </script>
