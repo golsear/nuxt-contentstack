@@ -1,12 +1,15 @@
 <template>
   <div class="book-list">
-    <div v-for="book in books" 
+    <template v-if="books.length">
+      <div v-for="book in books" 
          :key="'book' + book.id">
-      {{ book.title }}
-      <NuxtLink :to="{ path: 'book/' + book.id }">
-        Book landing page
-      </NuxtLink>
-    </div>
+          <Book :book-data="book"/>
+          <NuxtLink :to="{ path: 'book/' + book.id }">More</NuxtLink>
+      </div>
+    </template>
+    <template v-else>
+      Books were not found        
+    </template>
     <Pagination/>
   </div>
 </template>

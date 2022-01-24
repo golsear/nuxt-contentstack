@@ -1,6 +1,6 @@
 <template>
   <div class="book">
-    <Book/>
+    <Book :book-data="{}"/>
   </div>
 </template>
 
