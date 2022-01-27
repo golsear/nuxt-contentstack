@@ -1,34 +1,71 @@
 <template>
   <div>
-    <BookList :books="books"/>
+    <!-- <BookList :books="books"/> -->
+    <Book :book-data="bookData"/>
   </div>
 </template>
 
 <script>
-import { Stack } from "../Utils/contentstack";
+import Stack from "../Utils/contentstack";
+import * as Utils from "@contentstack/utils";
 
 export default {
   name: 'IndexPage',
   async asyncData({$axios}) {
     let books = [];
+    let bookData = {}; 
 
     try {
-        //const data = await Stack.ContentType('book').Entry('blt856591f28b525834').toJSON().fetch();
+        const data = await Stack.getEntryByUid({
+          contentTypeUid: 'book',
+          entryUid: 'blt856591f28b525834',
+          referenceFieldPath: [`authors`],
+          jsonRtePath: ['description', 'book.description'],
+        });
+
+        bookData = data[0];
+        
+        //bookData = data[0]
+        /* const bookQuery = Stack.ContentType('book').Query();
+        bookQuery.includeOwner().toJSON();
+        const data = bookQuery.where("uid", 'blt856591f28b525834').find();
+        
+        data.then(
+          (result) => {
+            console.log('result', result);
+
+            Utils.jsonToHTML({
+                entry: result,
+                paths: ['description', 'book.description'],
+                //renderOption,
+            });
+
+            console.log('result', result[0]);
+          },
+          (error) => {
+            reject(error);
+          }
+        ); */
+
+        //Stack.ContentType('book').Entry('blt856591f28b525834').toJSON().fetch();
         //const list = await Stack.getEntries({contentTypeUid:'blog_post',referenceFieldPath: [`author`, `related_post`], jsonRtePath:["body"]})
         const resp = await $axios.get('https://37f1d601-e3aa-43a3-96d8-007912c25b5e.mock.pstmn.io/success/books');
         
+        console.log('bookData', bookData);
+
         books = resp.data;
     } catch (err) {
         console.error('Something was wrong: ', err);
     }
     
     return {
-      books
+      books,
+      bookData
     }
   },
    mounted () {
       // TODO: store books
-      console.log('books', this.books);
+      // console.log('books', this.books);
   },
 }
 </script>
