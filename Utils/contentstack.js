@@ -95,7 +95,7 @@ import * as Utils from "@contentstack/utils";
         blogQuery.includeOwner().toJSON();
         const data = blogQuery.where("uid", `${entryUid}`).find();
         data.then(
-          (result) => {
+          (result) => {console.log('RESULT', result);
             jsonRtePath &&
               Utils.jsonToHTML({
                 entry: result,
