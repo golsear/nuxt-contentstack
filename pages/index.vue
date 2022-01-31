@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!-- <BookList :books="books"/> -->
+    <BookList :books="{}"/>
     <Book :book-data="bookData"/>
 
-    {{bbb}}
+    {{ books }}
 
     <button v-if="showMoreEnabled" @click="showMore">Show more</button>
     
@@ -14,6 +14,7 @@
 import Stack from "../Utils/contentstack";
 import gql from 'graphql-tag';
 import * as Utils from "@contentstack/utils";
+import { mapActions, mapGetters } from 'vuex'
 
 const ALL_BOOK_QUERY = gql`
 query allBook ($limit: Int!, $skip: Int!) {
@@ -70,21 +71,26 @@ export default {
     
   },
   computed: {
+    ...mapGetters([
+      'books',
+    ]),
     // a computed getter
-    bbb: function () {
+    bookList: function () {
       let self = this;
+      let items = [];
       if(self.all_book){
         Utils.jsonToHTML({ entry: this.all_book.items, paths: ['description', 'description.json']})
-        console.log('ent', this.all_book);
+        console.log('ent', this.all_book.items);
+        items = this.all_book.items.slice();  
       }
       
       
       
-      return this.all_book;
+      return items;
     }
   },
   async asyncData({$axios}) {
-    let books = [];
+    //let books = [];
     let bookData = {}; 
 
     try {
@@ -126,31 +132,60 @@ export default {
         console.log('bookData>>>', bookData);
         console.log(ALL_BOOK_QUERY)
 
-        books = resp.data;
+        //books = resp.data;
     } catch (err) {
         console.error('Something was wrong: ', err);
     }
     
     return {
-      books,
+      //books,
       bookData
     }
   },
    mounted () {
       // TODO: store books
       // console.log('books', this.books);
+      
   },
   data: () => ({
     skip: 0,
     limit: 2,
     showMoreEnabled: true,
   }),
+  async created() {
+    await this.getBooks({
+      skip: 0,
+      limit: 2
+    });
+  },
   methods: {
-    showMore () {
-      this.skip += 2;
-      console.log('Okkk', this.limit, this.skip);
+    ...mapActions([
+      'getBooks',
+      'setSkip'
+    ]),
+
+    async showMore () {
+      this.setSkip();
+      this.getBooks();
+      //this.$store.dispatch('updateBookList', {b: 2});
+      //let self = this;
+      //this.skip += 2;
+       
+      /* const response = await this.$apollo.query({
+        query: ALL_BOOK_QUERY,
+        variables: {
+          limit: this.limit,
+          skip: this.skip,
+        }
+      }) */
+
+      /* this.$apollo.queries.all_book.refetch({
+         limit: this.limit,
+          skip: this.skip,
+      }); */
+
       // Fetch more data and transform the original result
-      this.$apollo.queries.all_book.fetchMore({
+      /* this.$apollo.queries.all_book.fetchMore({
         // New variables
         variables: {
           limit: this.limit,
@@ -167,9 +202,11 @@ export default {
 
           return {
             all_book: all_book,
+           
+            
           }
         },
-      })
+      }) */
     },
   }
 }

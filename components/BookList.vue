@@ -1,5 +1,6 @@
 <template>
   <div class="book-list">
+    {{ this.$store.state.bookList }}
     <template v-if="books.length">
       <div v-for="book in books" 
          :key="'book' + book.id">
@@ -19,7 +20,7 @@ export default {
   name: 'BookList',
   props: ['books'],
   mounted () {
-    console.log(this.books);
+    console.log('book list: ', this.books, this.$store.state.bookList);
   }
 }
 </script>
