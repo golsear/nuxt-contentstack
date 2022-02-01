@@ -1,19 +1,13 @@
 <template>
   <div>
     <BookList :books="books"/>
-    
-
-    {{ books }}
-
-    <button v-if="showMoreEnabled" @click="showMore">Show more</button>
-    
   </div>
 </template>
 
 <script>
 import Stack from "../Utils/contentstack";
 import * as Utils from "@contentstack/utils";
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
 
 
 export default {
@@ -27,7 +21,7 @@ export default {
       let items = [];
       if(self.all_book){
         Utils.jsonToHTML({ entry: this.all_book.items, paths: ['description', 'description.json']})
-        console.log('ent', this.all_book.items);
+        //console.log('ent', this.all_book.items);
         items = this.all_book.items.slice();  
       }
       
@@ -86,67 +80,13 @@ export default {
       bookData
     }
   },
-  data: () => ({
-    skip: 0,
-    limit: 2,
-    showMoreEnabled: true,
-  }),
   async created() {
-    await this.getBooks({
-      skip: 0,
-      limit: 2
-    });
+    await this.getBooks();
   },
   methods: {
     ...mapActions([
-      'getBooks',
-      'setSkip'
+      'getBooks'
     ]),
-
-    async showMore () {
-      this.setSkip();
-      this.getBooks();
-      //this.$store.dispatch('updateBookList', {b: 2});
-      //let self = this;
-      //this.skip += 2;
-       
-      /* const response = await this.$apollo.query({
-        query: ALL_BOOK_QUERY,
-        variables: {
-          limit: this.limit,
-          skip: this.skip,
-        }
-      }) */
-
-      /* this.$apollo.queries.all_book.refetch({
-         limit: this.limit,
-          skip: this.skip,
-      }); */
-
-      // Fetch more data and transform the original result
-      /* this.$apollo.queries.all_book.fetchMore({
-        // New variables
-        variables: {
-          limit: this.limit,
-          skip: this.skip,
-        },
-        // Transform the previous result with new data
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          console.log('prev', previousResult);
-          console.log('next', fetchMoreResult);
-          const all_book = fetchMoreResult.all_book
-          //const hasMore = fetchMoreResult.all_book.hasMore
-
-          //this.showMoreEnabled = hasMore
-
-          return {
-            all_book: all_book,
-           
-            
-          }
-        },
-      }) */
-    },
   }
 }
 </script>
