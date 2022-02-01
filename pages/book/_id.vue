@@ -1,6 +1,7 @@
 <template>
   <div class="book">
-    <Book :book-data="{}"/>
+    Book detail {{ this.$route.params.id }}
+    <!-- <Book :book="{}"/> -->
   </div>
 </template>
 

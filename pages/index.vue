@@ -1,7 +1,7 @@
 <template>
   <div>
-    <BookList :books="{}"/>
-    <Book :book-data="bookData"/>
+    <BookList :books="books"/>
+    
 
     {{ books }}
 
@@ -12,69 +12,16 @@
 
 <script>
 import Stack from "../Utils/contentstack";
-import gql from 'graphql-tag';
 import * as Utils from "@contentstack/utils";
 import { mapActions, mapGetters } from 'vuex'
 
-const ALL_BOOK_QUERY = gql`
-query allBook ($limit: Int!, $skip: Int!) {
-  all_book (limit: $limit, skip: $skip) {
-    total
-    items {
-      number_of_pages
-      book_title
-      description {
-        json
-      }
-      link {
-        href
-        title
-      }
-      authorsConnection {
-        edges {
-          node {
-            ... on Author {
-              title
-              author_name
-            }
-          }
-        }
-      }
-      imageConnection {
-        edges {
-          node {
-            title
-            url
-            content_type
-            filename
-            file_size
-            description
-          }
-        }
-      }
-    }
-  }
-  }
-  `;
 
 export default {
   name: 'IndexPage',
-  apollo: {
-    all_book: {
-      query: ALL_BOOK_QUERY,
-      prefetch: true,
-      variables: {
-        limit: 2,
-        skip: 0,
-      },
-    },
-    
-  },
   computed: {
     ...mapGetters([
       'books',
     ]),
-    // a computed getter
     bookList: function () {
       let self = this;
       let items = [];
@@ -129,9 +76,6 @@ export default {
         //const list = await Stack.getEntries({contentTypeUid:'blog_post',referenceFieldPath: [`author`, `related_post`], jsonRtePath:["body"]})
         const resp = await $axios.get('https://37f1d601-e3aa-43a3-96d8-007912c25b5e.mock.pstmn.io/success/books');
         
-        console.log('bookData>>>', bookData);
-        console.log(ALL_BOOK_QUERY)
-
         //books = resp.data;
     } catch (err) {
         console.error('Something was wrong: ', err);
@@ -141,11 +85,6 @@ export default {
       //books,
       bookData
     }
-  },
-   mounted () {
-      // TODO: store books
-      // console.log('books', this.books);
-      
   },
   data: () => ({
     skip: 0,

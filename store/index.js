@@ -1,48 +1,5 @@
-import gql from 'graphql-tag';
-
-const ALL_BOOK_QUERY = gql`
-query allBook ($limit: Int!, $skip: Int!) {
-  all_book (limit: $limit, skip: $skip) {
-    total
-    items {
-      number_of_pages
-      book_title
-      description {
-        json
-      }
-      link {
-        href
-        title
-      }
-      authorsConnection {
-        edges {
-          node {
-            ... on Author {
-              title
-              author_name
-            }
-          }
-        }
-      }
-      imageConnection {
-        edges {
-          node {
-            title
-            url
-            content_type
-            filename
-            file_size
-            description
-          }
-        }
-      }
-      system {
-        uid
-      }
-    }
-  }
-  }
-  `;
+import * as Utils from "@contentstack/utils";
+import { BOOKS_QUERY } from '../queries';
 
 export const state = () => ({
     books: [],
@@ -52,30 +9,48 @@ export const state = () => ({
 
 export const mutations = {
     setBooks(state, v) {
-        console.log('state: setBooks');
         state.books = v;
     },
     setSkip(state, v) {
-        console.log('state: setSkip');
-        state.skip += 2;
+        state.skip += state.limit;
     }
 }
 
 export const actions = {
-    async getBooks({ commit, state }, data) {
-        let apollo = this.app.apolloProvider.defaultClient;
-        console.log('action: getBooks');
+    async getBooks({ commit, state }) {
+        const apollo = this.app.apolloProvider.defaultClient;
         const response = await apollo.query({
-            query: ALL_BOOK_QUERY,
+            query: BOOKS_QUERY,
             variables: {
               limit: state.limit,
               skip: state.skip,
             }
           });
 
-          const books = response.data.all_book.items.slice();
+        Utils.jsonToHTML({ entry: response.data.all_book.items, paths: ['description', 'description.json']});
 
-          console.log('action: getBooks: response', books);
+        const getAuthors = (arr) => {
+            const authorsArr = arr.map((authorObj) => {
+                return authorObj.node.author_name;        
+            });
+            
+            return authorsArr.join(', ');
+        }
+
+        const books = response.data.all_book.items.map((book) => {
+            return {
+                authors: getAuthors(book.authorsConnection.edges),
+                uid: book.system.uid,
+                imageUrl: book.imageConnection.edges[0].node.url,
+                title: book.book_title,
+                description: book.description.json,
+                number_of_pages: book.number_of_pages,
+                link: {
+                    href: book.link.href,
+                    title: book.link.title 
+                }
+            };
+        });
 
         commit('setBooks', books);
     },
@@ -85,8 +60,5 @@ export const actions = {
 }
 
 export const getters = {
-    books: state => {
-        console.log('getter: books', state);
-      return state.books
-    }
-  }
+    books: state => state.books
+}

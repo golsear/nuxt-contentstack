@@ -1,33 +1,18 @@
 <template>
   <div class="book">
-    <div v-if="imageUrl"><img :src="imageUrl + '?width=100'"/></div>
-    <div v-if="title">{{ title }}</div>
-    <div v-if="authors">{{ authors }}</div>
-    <div v-html="description" v-if="description"></div>
-    <a :href="link.href" target="_blank">{{ link.title }}</a>
+    <div><img :src="book.imageUrl + '?width=100'"/></div>
+    <div>{{ book.title }}</div>
+    <div>{{ book.authors }}</div>
+    <div v-html="book.description"></div>
+    <div>{{ book.number_of_pages }}</div>
+    <a :href="book.link.href" target="_blank">{{ book.link.title }}</a>
+    <NuxtLink :to="{ path: 'book/' + book.uid }">Detail</NuxtLink>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Book',
-  props: ['bookData'],
-  data () {
-    const bookData = this.bookData;
-    
-    return {
-      imageUrl: bookData.image.url,
-      title: bookData.book_title,
-      //authors: bookData.authors,
-      description: bookData.description,
-      link: bookData.link
-    }
-  },
-  computed: {
-    authors: function () {
-      console.log(this.bookData.authors);
-      return 'Okk';
-    }
-  }
+  props: ['book']
 }
 </script>
