@@ -1,14 +1,37 @@
 <template>
   <div class="book">
     Book detail {{ this.$route.params.id }}
-    <!-- <Book :book="{}"/> -->
+    <Book :book="book"/>
+    {{ book }}
   </div>
 </template>
 
 <script>
+import Stack from "../../Utils/contentstack";
+import { convertBookObj } from "../../Utils/helpers";
+
 export default {
-  mounted () {
-    console.log('mounted: book id', this.$route.params.id);
-  }
+  async asyncData({ route }) {
+    let book = {};
+
+    try {
+        const resp = await Stack.getEntryByUid({
+          contentTypeUid: 'book',
+          entryUid: route.params.id,
+          referenceFieldPath: [`authors`],
+          jsonRtePath: ['description', 'book.description'],
+          fields: ['image', 'book_title', 'authors', 'description', 'number_of_pages', 'link']
+        });
+        const respObj = resp[0];
+        
+        book = convertBookObj(respObj, 'contentDeliveryAPI');
+    } catch (err) {
+        console.error('Something was wrong: ', err);
+    }
+    
+    return {
+      book
+    }
+  },
 }
 </script>

@@ -86,11 +86,13 @@ import * as Utils from "@contentstack/utils";
      * @param {* url for entry to be fetched} entryUrl
      * @param {* reference field name} referenceFieldPath
      * @param {* Json RTE path} jsonRtePath
+     * @param {* fields in the response} fields
      * @returns
      */
-     getEntryByUid({ contentTypeUid, entryUid, referenceFieldPath, jsonRtePath }) {
+     getEntryByUid({ contentTypeUid, entryUid, referenceFieldPath, jsonRtePath, fields }) {
       return new Promise((resolve, reject) => {
         const blogQuery = Stack.ContentType(contentTypeUid).Query();
+        if (fields) blogQuery.only(fields);
         if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
         blogQuery.includeOwner().toJSON();
         const data = blogQuery.where("uid", `${entryUid}`).find();

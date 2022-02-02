@@ -1,5 +1,6 @@
 import * as Utils from "@contentstack/utils";
 import { BOOKS_QUERY } from '../queries';
+import { convertBookObj } from "../Utils/helpers";
 
 export const state = () => ({
     books: [],
@@ -19,7 +20,7 @@ export const mutations = {
 export const actions = {
     async getBooks({ commit, state }) {
         const apollo = this.app.apolloProvider.defaultClient;
-        const response = await apollo.query({
+        const resp = await apollo.query({
             query: BOOKS_QUERY,
             variables: {
               limit: state.limit,
@@ -27,29 +28,10 @@ export const actions = {
             }
           });
 
-        Utils.jsonToHTML({ entry: response.data.all_book.items, paths: ['description', 'description.json']});
+        Utils.jsonToHTML({ entry: resp.data.all_book.items, paths: ['description', 'description.json']});
 
-        const getAuthors = (arr) => {
-            const authorsArr = arr.map((authorObj) => {
-                return authorObj.node.author_name;        
-            });
-            
-            return authorsArr.join(', ');
-        }
-
-        const books = response.data.all_book.items.map((book) => {
-            return {
-                authors: getAuthors(book.authorsConnection.edges),
-                uid: book.system.uid,
-                imageUrl: book.imageConnection.edges[0].node.url,
-                title: book.book_title,
-                description: book.description.json,
-                number_of_pages: book.number_of_pages,
-                link: {
-                    href: book.link.href,
-                    title: book.link.title 
-                }
-            };
+        const books = resp.data.all_book.items.map((respObj) => {
+            return convertBookObj(respObj, 'contentstackGraphQLAPI');
         });
 
         commit('setBooks', books);
@@ -60,5 +42,8 @@ export const actions = {
 }
 
 export const getters = {
-    books: state => state.books
+    books: state => state.books,
+    getBookById: (state) => (id) => {
+        return state.books.find(book => book.uid === id);
+    }
 }

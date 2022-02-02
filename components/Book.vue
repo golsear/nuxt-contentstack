@@ -1,5 +1,5 @@
 <template>
-  <div class="book">
+  <div v-if="book" class="book">
     <div><img :src="book.imageUrl + '?width=100'"/></div>
     <div>{{ book.title }}</div>
     <div>{{ book.authors }}</div>
