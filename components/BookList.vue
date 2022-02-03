@@ -3,7 +3,7 @@
     <template v-if="books.length">
       <div v-for="book in books" 
          :key="'book' + book.uid">
-          <Book :book="book"/>
+          <BookItem :book="book"/>
       </div>
       <Pagination/>
     </template>
