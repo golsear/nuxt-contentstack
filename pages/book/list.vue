@@ -17,6 +17,7 @@
 
 <script>
 import Stack from "../../Utils/contentstack";
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'BookListPage',
@@ -35,6 +36,16 @@ export default {
     return {
       books,
       page: pageData[0]
+    }
+  },
+  computed: {
+    ...mapGetters({
+      storedBooks: 'getBooks'
+    })
+  },
+  watch: {
+    storedBooks(books) {
+      this.books = books;
     }
   },
   head(data) {

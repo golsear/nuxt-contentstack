@@ -6,19 +6,23 @@ export const state = () => ({
     books: [],
     limit: 2,
     skip: 0,
-    count: 0
+    total: 0,
+    currentPage: 1
 })
 
 export const mutations = {
-    setBooks(state, v) {
-        state.books = v;
+    setBooks(state, books) {
+        state.books = books;
     },
-    setSkip(state, v) {
-        state.skip += state.limit;
+    setSkip(state, skip) {
+        state.skip = skip;
     },
-    setCount(state, v) {
-        state.count = v;
-    }
+    setTotal(state, total) {
+        state.total = total;
+    },
+    setCurrentPage(state, page) {
+        state.currentPage = page;
+    },
 }
 
 export const actions = {
@@ -42,11 +46,15 @@ export const actions = {
         commit('setTotal', total);
         commit('setBooks', books);
     },
-    setSkip({ commit }) {
-        commit('setSkip');
+    setSkip({ commit, state }, page) {
+        const skip = ( page - 1 ) * state.limit;
+        commit('setSkip', skip);
     },
-    setCount({ commit }) {
-        commit('setCount');
+    setCurrentPage({ commit, state }, page) {
+        commit('setCurrentPage', page);
+    },
+    setTotal({ commit }) {
+        commit('setTotal');
     }
 }
 
@@ -55,5 +63,8 @@ export const getters = {
     getBookById: (state) => (id) => {
         return state.books.find(book => book.uid === id);
     },
-    getCount: state => state.count
+    getTotal: state => state.total,
+    getSkip: state => state.skip,
+    getLimit: state => state.limit,
+    getCurrentPage: state => state.currentPage
 }
