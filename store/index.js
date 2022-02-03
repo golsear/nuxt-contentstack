@@ -18,7 +18,7 @@ export const mutations = {
 }
 
 export const actions = {
-    async getBooks({ commit, state }) {
+    async setBooks({ commit, state }) {
         const apollo = this.app.apolloProvider.defaultClient;
         const resp = await apollo.query({
             query: BOOKS_QUERY,
@@ -42,7 +42,7 @@ export const actions = {
 }
 
 export const getters = {
-    books: state => state.books,
+    getBooks: state => state.books,
     getBookById: (state) => (id) => {
         return state.books.find(book => book.uid === id);
     }

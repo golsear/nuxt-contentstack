@@ -5,11 +5,11 @@
          :key="'book' + book.uid">
           <Book :book="book"/>
       </div>
+      <Pagination/>
     </template>
     <template v-else>
       Books were not found        
     </template>
-    <Pagination/>
   </div>
 </template>
 

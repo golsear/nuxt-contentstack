@@ -12,6 +12,9 @@ import * as Utils from "@contentstack/utils";
     ["span"]: (node, next) => {
       return next(node.children);
     },
+    a: (entry) => {
+      return `<a href="${entry.attrs.url}">${entry.children[0].text}</a>`
+    }
   };
 
   export default {
@@ -64,7 +67,7 @@ import * as Utils from "@contentstack/utils";
         blogQuery.includeOwner().toJSON();
         const data = blogQuery.where("url", `${entryUrl}`).find();
         data.then(
-          (result) => {
+          (result) => {console.log(result);
             jsonRtePath &&
               Utils.jsonToHTML({
                 entry: result,

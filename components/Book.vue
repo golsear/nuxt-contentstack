@@ -6,7 +6,7 @@
     <div v-html="book.description"></div>
     <div>{{ book.number_of_pages }}</div>
     <a :href="book.link.href" target="_blank">{{ book.link.title }}</a>
-    <NuxtLink :to="{ path: 'book/' + book.uid }">Detail</NuxtLink>
+    <NuxtLink :to="{ path: book.uid }">Detail</NuxtLink>
   </div>
 </template>
 

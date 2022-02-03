@@ -13,17 +13,16 @@
 import Stack from "../Utils/contentstack";
 
 export default {
-  name: 'IndexPage',
-  async asyncData({ route  }) {
+  name: 'TaskPage',
+  async asyncData({ route }) {
     const pageData = await Stack.getEntryByUrl({
-      contentTypeUid: 'home_page',
+      contentTypeUid: 'page',
       entryUrl: `${route.fullPath}`,
       jsonRtePath: ['body'],
-    });
-    const page = pageData[0];
-    
+    })
+
     return {
-      page
+      page: pageData[0]
     }
   },
   head(data) {

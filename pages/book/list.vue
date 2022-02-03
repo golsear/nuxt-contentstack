@@ -6,24 +6,35 @@
     <h1 class="page__title">{{ page.title }}</h1>
     <div class="page__introduction" v-html="page.introduction"></div>
     <div class="page__body" v-html="page.body"></div>
+    <template v-if="books.length">
+      <BookList :books="books"/>
+    </template>
+    <template v-else>
+      Books are not found
+    </template>
   </div>
 </template>
 
 <script>
-import Stack from "../Utils/contentstack";
+import Stack from "../../Utils/contentstack";
 
 export default {
-  name: 'IndexPage',
-  async asyncData({ route  }) {
-    const pageData = await Stack.getEntryByUrl({
-      contentTypeUid: 'home_page',
-      entryUrl: `${route.fullPath}`,
-      jsonRtePath: ['body'],
-    });
-    const page = pageData[0];
-    
+  name: 'BookListPage',
+  async asyncData({ store, route }) {
+    const [books, pageData] = await Promise.all([ 
+      store.dispatch('setBooks').then(() => {
+        return store.getters.getBooks;
+      }),
+      Stack.getEntryByUrl({
+        contentTypeUid: 'page',
+        entryUrl: `${route.fullPath}`,
+        jsonRtePath: ['body'],
+      })
+    ]);
+
     return {
-      page
+      books,
+      page: pageData[0]
     }
   },
   head(data) {

@@ -1,8 +1,6 @@
 <template>
   <div class="book">
-    Book detail {{ this.$route.params.id }}
     <Book :book="book"/>
-    {{ book }}
   </div>
 </template>
 
@@ -19,7 +17,7 @@ export default {
           contentTypeUid: 'book',
           entryUid: route.params.id,
           referenceFieldPath: [`authors`],
-          jsonRtePath: ['description', 'book.description'],
+          jsonRtePath: ['description'],
           fields: ['image', 'book_title', 'authors', 'description', 'number_of_pages', 'link']
         });
         const respObj = resp[0];
