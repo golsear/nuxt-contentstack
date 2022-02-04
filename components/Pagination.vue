@@ -1,14 +1,24 @@
 <template>
   <div class="pagination">
-    <button @click="showPage(currentPage - 1)" :disabled='currentPage == 1'>Prev</button>
+    <button @click="showPage(currentPage - 1)" 
+            :disabled='currentPage == 1'>
+            Prev
+    </button>
     <ul>
     <template v-for="page in pages">
       <li :key="'page' + page">
-        <a href="#" @click.prevent="showPage(page)" :class="{ active: currentPage == page }">{{ page }}</a>
+        <a href="#" 
+           @click.prevent="showPage(page)" 
+           :class="{ active: currentPage == page }">
+           {{ page }}
+        </a>
       </li>
     </template>
     </ul>
-    <button @click="showPage(currentPage + 1)" :disabled='currentPage == pages'>Next</button>
+    <button @click="showPage(currentPage + 1)" 
+            :disabled='currentPage == pages'>
+            Next
+    </button>
   </div>
 </template>
 
@@ -17,9 +27,6 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Pagination',
-  data: () => ({
-    //currentPage: 1
-  }),
   computed: {
     ...mapGetters({
       total: 'getTotal',
@@ -33,20 +40,13 @@ export default {
   methods: {
     ...mapActions([
       'setBooks',
-      //'setSkip',
       'setCurrentPage'
     ]),
     async showPage (page) {
-      /* this.setCurrentPage(page)
-      await this.setSkip(page)
+      await this.setCurrentPage(page)
       .then(()=>{
         this.setBooks();
-      }); */
-
-      await this.setCurrentPage(page)
-                .then(()=>{
-                  this.setBooks();
-                });
+      });
     },
   }
 }

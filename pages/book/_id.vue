@@ -18,7 +18,7 @@ export default {
           entryUid: route.params.id,
           referenceFieldPath: [`authors`],
           jsonRtePath: ['description'],
-          fields: ['image', 'book_title', 'authors', 'description', 'number_of_pages', 'link']
+          fields: ['image', 'book_title', 'authors', 'description', 'number_of_pages', 'link', 'seo']
         });
         const respObj = resp[0];
         
@@ -29,6 +29,19 @@ export default {
     
     return {
       book
+    }
+  },
+  head(data) {
+    return {
+      title: data.book.title,
+      meta: [
+        {
+          title: data.book.title,
+          name: data.book.seo.title,
+          description: data.book.seo.description,
+          keywords: data.book.seo.keywords,
+        },
+      ],
     }
   },
 }

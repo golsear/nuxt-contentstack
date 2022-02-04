@@ -29,6 +29,7 @@ export function convertBookObj(obj, api) {
         link: {
           href: obj.link.href,
           title: obj.link.title 
-        }
+        },
+        seo: obj.seo
     }
 }
