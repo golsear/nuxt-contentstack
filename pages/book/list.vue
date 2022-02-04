@@ -1,7 +1,9 @@
 <template>
-  <div class="page">
-    <div class="page__banner">
-      <img src=""/>
+  <div class="container page">
+    <div class="row page__banner">
+      <div class="col-12">
+        <img src=""/>
+      </div>
     </div>
     <h1 class="page__title">{{ page.title }}</h1>
     <div class="page__introduction" v-html="page.introduction"></div>

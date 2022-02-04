@@ -1,10 +1,10 @@
 <template>
-  <ul :class="prefix">
-    <li v-for="(link, index) in links" 
-        :key="prefix + index">
-        <NuxtLink :to="link.href">{{ link.title }}</NuxtLink>
-    </li>
-  </ul>
+  <div :class="[prefix, 'navbar-nav']">
+    <NuxtLink v-for="(link, index) in links" 
+              :key="prefix + index" 
+              :to="link.href" 
+              class="nav-link">{{ link.title }}</NuxtLink>
+  </div>
 </template>
 
 <script>

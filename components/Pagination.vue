@@ -1,5 +1,35 @@
 <template>
-  <div class="pagination">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li :class="[{ disabled: currentPage == 1 }, 'page-item']">
+        <a class="page-link" 
+           href="#" 
+           aria-label="Previous"
+           @click.prevent="showPage(currentPage - 1)">
+          Previous
+        </a>
+      </li>
+      <template v-for="page in pages">
+        <li :key="'page' + page"
+            :class="[{ active: currentPage == page }, 'page-item']">
+          <a href="#" 
+            @click.prevent="showPage(page)" 
+            :class="[{ active: currentPage == page }, 'page-link']">
+            {{ page }}
+          </a>
+        </li>
+      </template>
+      <li :class="[{ disabled: currentPage == pages }, 'page-item']">
+        <a class="page-link" 
+           href="#" 
+           aria-label="Next"
+           @click.prevent="showPage(currentPage + 1)">
+          Next
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- <div class="pagination">
     <button @click="showPage(currentPage - 1)" 
             :disabled='currentPage == 1'>
             Prev
@@ -19,7 +49,7 @@
             :disabled='currentPage == pages'>
             Next
     </button>
-  </div>
+  </div> -->
 </template>
 
 <script>
