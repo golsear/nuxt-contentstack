@@ -5,7 +5,6 @@ import { convertBookObj } from "../Utils/helpers";
 export const state = () => ({
     books: [],
     limit: 2,
-    skip: 0,
     total: 0,
     currentPage: 1
 })
@@ -13,9 +12,6 @@ export const state = () => ({
 export const mutations = {
     setBooks(state, books) {
         state.books = books;
-    },
-    setSkip(state, skip) {
-        state.skip = skip;
     },
     setTotal(state, total) {
         state.total = total;
@@ -27,15 +23,16 @@ export const mutations = {
 
 export const actions = {
     async setBooks({ commit, state }) {
+        const skip = ( state.currentPage - 1 ) * state.limit;
         const apollo = this.app.apolloProvider.defaultClient;
         const resp = await apollo.query({
             query: BOOKS_QUERY,
             variables: {
               limit: state.limit,
-              skip: state.skip,
+              skip: skip
             }
           });
-
+        
         Utils.jsonToHTML({ entry: resp.data.all_book.items, paths: ['description', 'description.json']});
 
         const books = resp.data.all_book.items.map((respObj) => {
@@ -45,10 +42,6 @@ export const actions = {
 
         commit('setTotal', total);
         commit('setBooks', books);
-    },
-    setSkip({ commit, state }, page) {
-        const skip = ( page - 1 ) * state.limit;
-        commit('setSkip', skip);
     },
     setCurrentPage({ commit, state }, page) {
         commit('setCurrentPage', page);
@@ -64,7 +57,6 @@ export const getters = {
         return state.books.find(book => book.uid === id);
     },
     getTotal: state => state.total,
-    getSkip: state => state.skip,
     getLimit: state => state.limit,
     getCurrentPage: state => state.currentPage
 }

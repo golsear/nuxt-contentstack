@@ -33,17 +33,20 @@ export default {
   methods: {
     ...mapActions([
       'setBooks',
-      'setSkip',
+      //'setSkip',
       'setCurrentPage'
     ]),
     async showPage (page) {
-      //this.currentPage = page;
-      this.setCurrentPage(page)
+      /* this.setCurrentPage(page)
       await this.setSkip(page)
       .then(()=>{
         this.setBooks();
-      });
-      
+      }); */
+
+      await this.setCurrentPage(page)
+                .then(()=>{
+                  this.setBooks();
+                });
     },
   }
 }
