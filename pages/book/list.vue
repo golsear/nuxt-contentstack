@@ -1,19 +1,21 @@
 <template>
-  <div class="container page">
-    <div class="row page__banner">
-      <div class="col-12">
-        <img src=""/>
+  <div class="page">
+    <page-banner :url="page.banner.url"/>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 py-5">
+          <h1 class="page__title mb-3">{{ page.title }}</h1>
+          <div class="page__introduction" v-html="page.introduction"></div>
+          <div class="page__body" v-html="page.body"></div>
+          <template v-if="books.length">
+            <BookList :books="books"/>
+          </template>
+          <template v-else>
+            Books are not found
+          </template>
+        </div>
       </div>
     </div>
-    <h1 class="page__title">{{ page.title }}</h1>
-    <div class="page__introduction" v-html="page.introduction"></div>
-    <div class="page__body" v-html="page.body"></div>
-    <template v-if="books.length">
-      <BookList :books="books"/>
-    </template>
-    <template v-else>
-      Books are not found
-    </template>
   </div>
 </template>
 

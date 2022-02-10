@@ -4,7 +4,7 @@ import { convertBookObj } from "../Utils/helpers";
 
 export const state = () => ({
     books: [],
-    limit: 2,
+    limit: 5,
     total: 0,
     currentPage: 1
 })

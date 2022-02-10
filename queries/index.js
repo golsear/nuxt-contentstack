@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const BOOKS_QUERY = gql`
 query allBook ($limit: Int!, $skip: Int!) {
-    all_book (limit: $limit, skip: $skip) {
+    all_book (limit: $limit, skip: $skip, order_by: created_at_ASC) {
         total
         items {
             number_of_pages

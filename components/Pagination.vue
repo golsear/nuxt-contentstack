@@ -1,6 +1,6 @@
 <template>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
+  <nav aria-label="Book list pagination" class="mt-5">
+    <ul class="pagination pagination-sm">
       <li :class="[{ disabled: currentPage == 1 }, 'page-item']">
         <a class="page-link" 
            href="#" 
@@ -29,27 +29,6 @@
       </li>
     </ul>
   </nav>
-  <!-- <div class="pagination">
-    <button @click="showPage(currentPage - 1)" 
-            :disabled='currentPage == 1'>
-            Prev
-    </button>
-    <ul>
-    <template v-for="page in pages">
-      <li :key="'page' + page">
-        <a href="#" 
-           @click.prevent="showPage(page)" 
-           :class="{ active: currentPage == page }">
-           {{ page }}
-        </a>
-      </li>
-    </template>
-    </ul>
-    <button @click="showPage(currentPage + 1)" 
-            :disabled='currentPage == pages'>
-            Next
-    </button>
-  </div> -->
 </template>
 
 <script>

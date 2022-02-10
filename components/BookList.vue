@@ -1,8 +1,9 @@
 <template>
-  <div class="book-list">
+  <div class="book-list row mt-3">
     <template v-if="books.length">
-      <div v-for="book in books" 
-         :key="'book' + book.uid">
+      <div class="book-list__item col-12 col-sm-6 col-md-4 mb-3" 
+           v-for="book in books" 
+           :key="'book' + book.uid">
           <BookItem :book="book"/>
       </div>
       <Pagination/>

@@ -1,7 +1,11 @@
 <template>
-  <div class="book">
-    <Book :book="book"/>
-  </div>
+  <div class="container">
+      <div class="row">
+        <div class="col-12 py-5">
+          <Book :book="book"/>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
