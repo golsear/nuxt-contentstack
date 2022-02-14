@@ -7,6 +7,7 @@
           <h1 class="page__title">{{ page.title }}</h1>
           <div class="page__introduction" v-html="page.introduction"></div>
           <div class="page__body" v-html="page.body"></div>
+          <NasaApod />
         </div>
       </div>
     </div>
