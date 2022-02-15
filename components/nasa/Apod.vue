@@ -1,11 +1,10 @@
 <template>
   <div class="apod">
-    {{ apodData.date }}
+    {{ $moment(apodData.date).format('DD-MM-YYYY') }}
     {{ apodData.copyright }}
     {{ apodData.title }}
     <img :src="apodData.url"/>
     <div v-html="apodData.explanation"></div>
-    {{apodData}}
   </div>
 </template>
 
@@ -16,18 +15,14 @@ export default {
   name: 'Apod',
   data() {
     return {
-      apodData: []
+      apodData: [],
+      date: this.$moment().format('YYYY-MM-DD')
     }
   },
   async fetch() {
     const NASA_API_KEY = process.env.NASA_API_KEY;    
     const nasaService = new NasaService(NASA_API_KEY);
-    this.apodData = await nasaService.apod('2022-02-14');
-    console.log('>>>', apodData);
-
-    return {
-      apodData
-    }
-  },
+    this.apodData = await nasaService.apod(this.date);
+  }
 }
 </script>
