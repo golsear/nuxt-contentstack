@@ -4,4 +4,13 @@
             width: 100%;
         }
     }
+
+    &__picture-spinner {
+        border-left-color: transparent;
+        border-bottom-color: #FFFFFF;
+        border-right-color: #FFFFFF;
+        border-top-color: #FFFFFF;
+        height: 5rem;
+        width: 5rem;
+    }
 }
