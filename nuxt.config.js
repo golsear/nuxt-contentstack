@@ -1,13 +1,13 @@
 export default {
-  env: {
+  /*env: {
     CONTENTSTACK_API_KEY: process.env.CONTENTSTACK_API_KEY,
     CONTENTSTACK_DELIVERY_TOKEN: process.env.CONTENTSTACK_DELIVERY_TOKEN,
     CONTENTSTACK_ENVIRONMENT: process.env.CONTENTSTACK_ENVIRONMENT,
     CONTENTSTACK_REGION: process.env.CONTENTSTACK_REGION
       ? process.env.CONTENTSTACK_REGION
       : '',
-    NASA_API_KEY: process.env.NASA_API_KEY,  
-  },
+    NASA_API_KEY: process.env.NASA_API_KEY,
+  },*/
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -37,11 +37,11 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     {
-      src: '~/plugins/bootstrap.js', 
+      src: '~/plugins/bootstrap.js',
       mode: 'client'
     },
-    { src: '~/plugins/vue-datepicker', 
-      ssr: false 
+    { src: '~/plugins/vue-datepicker',
+      ssr: false
     }
   ],
 
@@ -71,5 +71,14 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+  publicRuntimeConfig: {
+    CONTENTSTACK_API_KEY: process.env.CONTENTSTACK_API_KEY,
+    CONTENTSTACK_DELIVERY_TOKEN: process.env.CONTENTSTACK_DELIVERY_TOKEN,
+    CONTENTSTACK_ENVIRONMENT: process.env.CONTENTSTACK_ENVIRONMENT,
+    CONTENTSTACK_REGION: process.env.CONTENTSTACK_REGION
+      ? process.env.CONTENTSTACK_REGION
+      : '',
+    NASA_API_KEY: process.env.NASA_API_KEY,
+  },
 }

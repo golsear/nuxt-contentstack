@@ -1,7 +1,7 @@
 <template>
   <div class="apod">
     <client-only>
-      <lable for="apod-date" class="form-label">Select date</lable>
+      <label for="apod-date" class="form-label">Select date</label>
       <date-picker class="mb-3"
                    id="apod-date"
                    placeholder="YYYY-MMM-DD"

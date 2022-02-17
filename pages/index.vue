@@ -20,17 +20,21 @@ import Stack from "../Utils/contentstack";
 export default {
   components: { PageBanner },
   name: 'IndexPage',
-  async asyncData({ route  }) {
+  async asyncData({ route, app  }) {
+    console.log('nuxt config', app.$config);
     const pageData = await Stack.getEntryByUrl({
       contentTypeUid: 'home_page',
       entryUrl: `${route.fullPath}`,
       jsonRtePath: ['body'],
     });
     const page = pageData[0];
-    
+
     return {
       page
     }
+  },
+  mounted() {
+    console.log('this.$config', this.$config)
   },
   head(data) {
     return {

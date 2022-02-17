@@ -1,72 +1,47 @@
 import * as contentstack from "contentstack";
 import * as Utils from "@contentstack/utils";
 
-  const Stack = contentstack.Stack({
-    api_key: process.env.CONTENTSTACK_API_KEY,
-    delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
-    environment: process.env.CONTENTSTACK_ENVIRONMENT,
-    region: process.env.CONTENTSTACK_REGION ? process.env.CONTENTSTACK_REGION : "us",
-  });
+/*const Stack = contentstack.Stack({
+  api_key: process.env.CONTENTSTACK_API_KEY,
+  delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
+  environment: process.env.CONTENTSTACK_ENVIRONMENT,
+  region: process.env.CONTENTSTACK_REGION ? process.env.CONTENTSTACK_REGION : "us",
+});*/
 
-  const renderOption = {
-    ["span"]: (node, next) => {
-      return next(node.children);
-    },
-    a: (entry) => {
-      return `<a href="${entry.attrs.url}">${entry.children[0].text}</a>`
-    }
-  };
+const Stack = contentstack.Stack({
+  api_key: 'blt24dc9879adb66205',
+  delivery_token: 'cs9b838805a8fda936b34a2226',
+  environment: 'development',
+  region: 'us',
+});
 
-  export default {
-    /**
-     *
-     * fetches all the entries from specific content-type
-     * @param {* content-type uid} contentTypeUid
-     * @param {* reference field name} referenceFieldPath
-     * @param {* Json RTE path} jsonRtePath
-     *
-     */
-     getEntries({ contentTypeUid, referenceFieldPath, jsonRtePath }) {
-      return new Promise((resolve, reject) => {
-        const query = Stack.ContentType(contentTypeUid).Query();
-        if (referenceFieldPath) query.includeReference(referenceFieldPath);
-        query
-          .includeOwner()
-          .toJSON()
-          .find()
-          .then(
-            (result) => {
-              jsonRtePath &&
-                Utils.jsonToHTML({
-                  entry: result,
-                  paths: jsonRtePath,
-                  renderOption,
-                });
-              resolve(result[0]);
-            },
-            (error) => {
-              reject(error);
-            }
-          );
-      });
-    },
-  
-    /**
-     *fetches specific entry from a content-type
-     *
-     * @param {* content-type uid} contentTypeUid
-     * @param {* url for entry to be fetched} entryUrl
-     * @param {* reference field name} referenceFieldPath
-     * @param {* Json RTE path} jsonRtePath
-     * @returns
-     */
-    getEntryByUrl({ contentTypeUid, entryUrl, referenceFieldPath, jsonRtePath }) {
-      return new Promise((resolve, reject) => {
-        const blogQuery = Stack.ContentType(contentTypeUid).Query();
-        if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
-        blogQuery.includeOwner().toJSON();
-        const data = blogQuery.where("url", `${entryUrl}`).find();
-        data.then(
+const renderOption = {
+  ["span"]: (node, next) => {
+    return next(node.children);
+  },
+  a: (entry) => {
+    return `<a href="${entry.attrs.url}">${entry.children[0].text}</a>`
+  }
+};
+
+export default {
+  /**
+   *
+   * fetches all the entries from specific content-type
+   * @param {* content-type uid} contentTypeUid
+   * @param {* reference field name} referenceFieldPath
+   * @param {* Json RTE path} jsonRtePath
+   *
+   */
+   getEntries({ contentTypeUid, referenceFieldPath, jsonRtePath }) {
+    return new Promise((resolve, reject) => {
+      const query = Stack.ContentType(contentTypeUid).Query();
+      if (referenceFieldPath) query.includeReference(referenceFieldPath);
+      query
+        .includeOwner()
+        .toJSON()
+        .find()
+        .then(
           (result) => {
             jsonRtePath &&
               Utils.jsonToHTML({
@@ -80,41 +55,73 @@ import * as Utils from "@contentstack/utils";
             reject(error);
           }
         );
-      });
-    },
-    /**
-     *fetches specific entry from a content-type
-     *
-     * @param {* content-type uid} contentTypeUid
-     * @param {* url for entry to be fetched} entryUrl
-     * @param {* reference field name} referenceFieldPath
-     * @param {* Json RTE path} jsonRtePath
-     * @param {* fields in the response} fields
-     * @returns
-     */
-     getEntryByUid({ contentTypeUid, entryUid, referenceFieldPath, jsonRtePath, fields }) {
-      return new Promise((resolve, reject) => {
-        const blogQuery = Stack.ContentType(contentTypeUid).Query();
-        if (fields) blogQuery.only(fields);
-        if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
-        blogQuery.includeOwner().toJSON();
-        const data = blogQuery.where("uid", `${entryUid}`).find();
-        data.then(
-          (result) => {
-            jsonRtePath &&
-              Utils.jsonToHTML({
-                entry: result,
-                paths: jsonRtePath,
-                renderOption,
-              });
-            resolve(result[0]);
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-      });
-    },
-  };
+    });
+  },
 
-  
+  /**
+   *fetches specific entry from a content-type
+   *
+   * @param {* content-type uid} contentTypeUid
+   * @param {* url for entry to be fetched} entryUrl
+   * @param {* reference field name} referenceFieldPath
+   * @param {* Json RTE path} jsonRtePath
+   * @returns
+   */
+  getEntryByUrl({ contentTypeUid, entryUrl, referenceFieldPath, jsonRtePath }) {
+    return new Promise((resolve, reject) => {
+      const blogQuery = Stack.ContentType(contentTypeUid).Query();
+      if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
+      blogQuery.includeOwner().toJSON();
+      const data = blogQuery.where("url", `${entryUrl}`).find();
+      data.then(
+        (result) => {
+          jsonRtePath &&
+            Utils.jsonToHTML({
+              entry: result,
+              paths: jsonRtePath,
+              renderOption,
+            });
+          resolve(result[0]);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  },
+  /**
+   *fetches specific entry from a content-type
+   *
+   * @param {* content-type uid} contentTypeUid
+   * @param {* url for entry to be fetched} entryUrl
+   * @param {* reference field name} referenceFieldPath
+   * @param {* Json RTE path} jsonRtePath
+   * @param {* fields in the response} fields
+   * @returns
+   */
+   getEntryByUid({ contentTypeUid, entryUid, referenceFieldPath, jsonRtePath, fields }) {
+    return new Promise((resolve, reject) => {
+      const blogQuery = Stack.ContentType(contentTypeUid).Query();
+      if (fields) blogQuery.only(fields);
+      if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
+      blogQuery.includeOwner().toJSON();
+      const data = blogQuery.where("uid", `${entryUid}`).find();
+      data.then(
+        (result) => {
+          jsonRtePath &&
+            Utils.jsonToHTML({
+              entry: result,
+              paths: jsonRtePath,
+              renderOption,
+            });
+          resolve(result[0]);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  },
+};
+
+
