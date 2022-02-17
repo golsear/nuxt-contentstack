@@ -16,11 +16,19 @@
 
 <script>
 import Stack from "../Utils/contentstack";
+import * as contentstack from "contentstack";
 
 export default {
   name: 'MicroservicePage',
-  async asyncData({ route }) {
+  async asyncData({ route, app }) {
+    const stack = contentstack.Stack({
+      api_key: app.$config.CONTENTSTACK_API_KEY,
+      delivery_token: app.$config.CONTENTSTACK_DELIVERY_TOKEN,
+      environment: app.$config.CONTENTSTACK_ENVIRONMENT,
+      region: app.$config.CONTENTSTACK_REGION,
+    });
     const pageData = await Stack.getEntryByUrl({
+      stack: stack,
       contentTypeUid: 'page',
       entryUrl: `${route.fullPath}`,
       jsonRtePath: ['body'],

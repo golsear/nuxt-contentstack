@@ -22,15 +22,23 @@
 <script>
 import Stack from "../../Utils/contentstack";
 import { mapGetters } from 'vuex';
+import * as contentstack from "contentstack";
 
 export default {
   name: 'BookListPage',
-  async asyncData({ store, route }) {
-    const [books, pageData] = await Promise.all([ 
+  async asyncData({ store, route, app }) {
+    const stack = contentstack.Stack({
+      api_key: app.$config.CONTENTSTACK_API_KEY,
+      delivery_token: app.$config.CONTENTSTACK_DELIVERY_TOKEN,
+      environment: app.$config.CONTENTSTACK_ENVIRONMENT,
+      region: app.$config.CONTENTSTACK_REGION,
+    });
+    const [books, pageData] = await Promise.all([
       store.dispatch('setBooks').then(() => {
         return store.getters.getBooks;
       }),
       Stack.getEntryByUrl({
+        stack: stack,
         contentTypeUid: 'page',
         entryUrl: `${route.fullPath}`,
         jsonRtePath: ['body'],

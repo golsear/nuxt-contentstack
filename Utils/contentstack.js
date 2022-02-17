@@ -1,19 +1,4 @@
-import * as contentstack from "contentstack";
 import * as Utils from "@contentstack/utils";
-
-/*const Stack = contentstack.Stack({
-  api_key: process.env.CONTENTSTACK_API_KEY,
-  delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
-  environment: process.env.CONTENTSTACK_ENVIRONMENT,
-  region: process.env.CONTENTSTACK_REGION ? process.env.CONTENTSTACK_REGION : "us",
-});*/
-
-const Stack = contentstack.Stack({
-  api_key: 'blt24dc9879adb66205',
-  delivery_token: 'cs9b838805a8fda936b34a2226',
-  environment: 'development',
-  region: 'us',
-});
 
 const renderOption = {
   ["span"]: (node, next) => {
@@ -33,9 +18,9 @@ export default {
    * @param {* Json RTE path} jsonRtePath
    *
    */
-   getEntries({ contentTypeUid, referenceFieldPath, jsonRtePath }) {
+   getEntries({ stack, contentTypeUid, referenceFieldPath, jsonRtePath }) {
     return new Promise((resolve, reject) => {
-      const query = Stack.ContentType(contentTypeUid).Query();
+      const query = stack.ContentType(contentTypeUid).Query();
       if (referenceFieldPath) query.includeReference(referenceFieldPath);
       query
         .includeOwner()
@@ -67,9 +52,9 @@ export default {
    * @param {* Json RTE path} jsonRtePath
    * @returns
    */
-  getEntryByUrl({ contentTypeUid, entryUrl, referenceFieldPath, jsonRtePath }) {
+  getEntryByUrl({ stack, contentTypeUid, entryUrl, referenceFieldPath, jsonRtePath }) {
     return new Promise((resolve, reject) => {
-      const blogQuery = Stack.ContentType(contentTypeUid).Query();
+      const blogQuery = stack.ContentType(contentTypeUid).Query();
       if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
       blogQuery.includeOwner().toJSON();
       const data = blogQuery.where("url", `${entryUrl}`).find();
@@ -99,9 +84,9 @@ export default {
    * @param {* fields in the response} fields
    * @returns
    */
-   getEntryByUid({ contentTypeUid, entryUid, referenceFieldPath, jsonRtePath, fields }) {
+   getEntryByUid({ stack, contentTypeUid, entryUid, referenceFieldPath, jsonRtePath, fields }) {
     return new Promise((resolve, reject) => {
-      const blogQuery = Stack.ContentType(contentTypeUid).Query();
+      const blogQuery = stack.ContentType(contentTypeUid).Query();
       if (fields) blogQuery.only(fields);
       if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
       blogQuery.includeOwner().toJSON();

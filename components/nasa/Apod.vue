@@ -54,7 +54,7 @@ export default {
     return {
       apodPicture: [],
       date: this.$moment().format('YYYY-MM-DD'),
-      nasaApiKey: process.env.NASA_API_KEY,
+      nasaApiKey: this.$config.NASA_API_KEY,
       preloader: false
     }
   },

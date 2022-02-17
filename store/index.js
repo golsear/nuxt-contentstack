@@ -32,7 +32,7 @@ export const actions = {
               skip: skip
             }
           });
-        
+
         Utils.jsonToHTML({ entry: resp.data.all_book.items, paths: ['description', 'description.json']});
 
         const books = resp.data.all_book.items.map((respObj) => {

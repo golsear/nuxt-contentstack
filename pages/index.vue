@@ -16,13 +16,20 @@
 <script>
 import PageBanner from '../components/PageBanner.vue';
 import Stack from "../Utils/contentstack";
+import * as contentstack from "contentstack";
 
 export default {
   components: { PageBanner },
   name: 'IndexPage',
   async asyncData({ route, app  }) {
-    console.log('nuxt config', app.$config);
+    const stack = contentstack.Stack({
+      api_key: app.$config.CONTENTSTACK_API_KEY,
+      delivery_token: app.$config.CONTENTSTACK_DELIVERY_TOKEN,
+      environment: app.$config.CONTENTSTACK_ENVIRONMENT,
+      region: app.$config.CONTENTSTACK_REGION,
+    });
     const pageData = await Stack.getEntryByUrl({
+      stack: stack,
       contentTypeUid: 'home_page',
       entryUrl: `${route.fullPath}`,
       jsonRtePath: ['body'],
@@ -32,9 +39,6 @@ export default {
     return {
       page
     }
-  },
-  mounted() {
-    console.log('this.$config', this.$config)
   },
   head(data) {
     return {
