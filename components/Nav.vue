@@ -2,6 +2,7 @@
   <nav :class="[prefix, classList ,'nav']">
     <template v-for="(link, index) in links">
       <NuxtLink v-if="!isExternalLink(link.href)"
+                target="_self"
                 :key="prefix + index"
                 :to="link.href"
                 class="nav-link">
